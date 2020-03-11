@@ -15,10 +15,10 @@ import (
 	"github.com/spf13/viper"
 	"k8s.io/client-go/rest"
 
-	"github.com/giantswarm/template-operator/flag"
-	"github.com/giantswarm/template-operator/pkg/project"
-	"github.com/giantswarm/template-operator/service/collector"
-	"github.com/giantswarm/template-operator/service/controller"
+	"github.com/giantswarm/azure-disk-mitigator/flag"
+	"github.com/giantswarm/azure-disk-mitigator/pkg/project"
+	"github.com/giantswarm/azure-disk-mitigator/service/collector"
+	"github.com/giantswarm/azure-disk-mitigator/service/controller"
 )
 
 // Config represents the configuration used to create a new service.

@@ -2,6 +2,6 @@ FROM alpine:3.10
 
 RUN apk add --no-cache ca-certificates
 
-ADD ./template-operator /template-operator
+ADD ./azure-disk-mitigator /azure-disk-mitigator
 
-ENTRYPOINT ["/template-operator"]
+ENTRYPOINT ["/azure-disk-mitigator"]

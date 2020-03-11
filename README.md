@@ -16,7 +16,7 @@
       and commit your changes.
 
 -->
-[![CircleCI](https://circleci.com/gh/giantswarm/template-operator.svg?&style=shield)](https://circleci.com/gh/giantswarm/template-operator) [![Docker Repository on Quay](https://quay.io/repository/giantswarm/template-operator/status "Docker Repository on Quay")](https://quay.io/repository/giantswarm/template-operator)
+[![CircleCI](https://circleci.com/gh/giantswarm/azure-disk-mitigator.svg?&style=shield)](https://circleci.com/gh/giantswarm/azure-disk-mitigator) [![Docker Repository on Quay](https://quay.io/repository/giantswarm/azure-disk-mitigator/status "Docker Repository on Quay")](https://quay.io/repository/giantswarm/azure-disk-mitigator)
 
 # REPOSITORY_NAME
 
@@ -27,7 +27,7 @@ To use it just hit `Use this template` button or [this
 link][generate].
 
 After creating your repository replace all instances of
-`template-operator` in this code base with your new repository name.
-Also rename `helm/template-operator` directory.
+`azure-disk-mitigator` in this code base with your new repository name.
+Also rename `helm/azure-disk-mitigator` directory.
 
-[generate]: https://github.com/giantswarm/template-operator/generate
+[generate]: https://github.com/giantswarm/azure-disk-mitigator/generate

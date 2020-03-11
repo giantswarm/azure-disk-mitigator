@@ -1,4 +1,4 @@
-module github.com/giantswarm/template-operator
+module github.com/giantswarm/azure-disk-mitigator
 
 go 1.13
 

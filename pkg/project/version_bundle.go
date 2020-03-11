@@ -8,13 +8,13 @@ func NewVersionBundle() versionbundle.Bundle {
 	return versionbundle.Bundle{
 		Changelogs: []versionbundle.Changelog{
 			{
-				Component:   "template-operator",
+				Component:   "azure-disk-mitigator",
 				Description: "TODO",
 				Kind:        versionbundle.KindChanged,
 			},
 		},
 		Components: []versionbundle.Component{},
-		Name:       "template-operator",
+		Name:       "azure-disk-mitigator",
 		Version:    BundleVersion(),
 	}
 }

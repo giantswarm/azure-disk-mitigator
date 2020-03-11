@@ -2,10 +2,10 @@ package project
 
 var (
 	bundleVersion = "0.0.1"
-	description   = "The template-operator does something."
+	description   = "The azure-disk-mitigator does something."
 	gitSHA        = "n/a"
-	name          = "template-operator"
-	source        = "https://github.com/giantswarm/template-operator"
+	name          = "azure-disk-mitigator"
+	source        = "https://github.com/giantswarm/azure-disk-mitigator"
 	version       = "n/a"
 )
 

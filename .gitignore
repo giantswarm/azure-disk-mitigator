@@ -1,4 +1,4 @@
 *.swp
 TODO
-/template-operator
+/azure-disk-mitigator
 !vendor/**
