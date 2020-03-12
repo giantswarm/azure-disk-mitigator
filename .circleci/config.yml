@@ -1,106 +1,26 @@
-orbs:
-  architect: giantswarm/architect@0.4.5
-
-version: 2.1
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
 jobs:
   build:
-    machine: true
+    docker:
+      # specify the version
+      - image: circleci/golang:1.9
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    #### TEMPLATE_NOTE: go expects specific checkout path representing url
+    #### expecting it in the form of
+    ####   /go/src/github.com/circleci/go-tool
+    ####   /go/src/bitbucket.org/circleci/go-tool
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     steps:
-    - checkout
+      - checkout
 
-    - run: |
-        wget -q $(curl -sS  https://api.github.com/repos/giantswarm/architect/releases/latest | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
-        chmod +x ./architect
-        ./architect version
-
-    - run: |
-        date +"%Y" > /tmp/year
-        date +"%m" > /tmp/month
-        date +"%d" > /tmp/day
-    - restore_cache:
-        keys:
-        - go-cache-v1-{{ checksum "/tmp/year" }}-{{ checksum "/tmp/month" }}-{{ checksum "/tmp/day" }}
-        - go-cache-v1-{{ checksum "/tmp/year" }}-{{ checksum "/tmp/month" }}
-        - go-cache-v1-{{ checksum "/tmp/year" }}
-
-    - run: ./architect build
-
-    - store_test_results:
-        path: /tmp/results
-
-    - persist_to_workspace:
-        root: .
-        paths:
-        - ./azure-disk-mitigator
-
-    - save_cache:
-        key: go-cache-v1-{{ checksum "/tmp/year" }}-{{ checksum "/tmp/month" }}-{{ checksum "/tmp/day" }}
-        paths:
-        - /tmp/go/cache
-
-workflows:
-  build:
-    jobs:
-      - build:
-          filters:
-            tags:
-              only: /^v.*/
-
-      - architect/push-to-docker:
-          name: push-azure-disk-mitigator-to-quay
-          image: "quay.io/giantswarm/azure-disk-mitigator"
-          username_envar: "QUAY_USERNAME"
-          password_envar: "QUAY_PASSWORD"
-          requires:
-            - build
-          # Needed to trigger job also on git tag.
-          filters:
-            tags:
-              only: /^v.*/
-
-      - hold-push-azure-disk-mitigator-to-aliyun-pr:
-          type: approval
-          requires:
-            - build
-          # Needed to prevent job from being triggered on master branch.
-          filters:
-            branches:
-              ignore: master
-
-      - architect/push-to-docker:
-          name: push-azure-disk-mitigator-to-aliyun-pr
-          image: "registry-intl.cn-shanghai.aliyuncs.com/giantswarm/azure-disk-mitigator"
-          username_envar: "ALIYUN_USERNAME"
-          password_envar: "ALIYUN_PASSWORD"
-          # Push to Aliyun should execute for non-master branches only once manually approved.
-          requires:
-            - hold-push-azure-disk-mitigator-to-aliyun-pr
-          # Needed to prevent job being triggered for master branch.
-          filters:
-            branches:
-              ignore: master
-
-      # Push to Aliyun should execute without manual approval on master.
-      - architect/push-to-docker:
-          name: push-azure-disk-mitigator-to-aliyun-master
-          image: "registry-intl.cn-shanghai.aliyuncs.com/giantswarm/azure-disk-mitigator"
-          username_envar: "ALIYUN_USERNAME"
-          password_envar: "ALIYUN_PASSWORD"
-          requires:
-            - build
-          # Needed to trigger job only on merge to master.
-          filters:
-            branches:
-              only: master
-
-      - architect/push-to-app-catalog:
-          name: push-azure-disk-mitigator-to-app-catalog
-          app_catalog: "control-plane-catalog"
-          app_catalog_test: "control-plane-test-catalog"
-          chart: "azure-disk-mitigator"
-          requires:
-            - push-azure-disk-mitigator-to-quay
-          # Needed to trigger job also on git tag.
-          filters:
-            tags:
-              only: /^v.*/
+      # specify any bash command here prefixed with `run: `
+      - run: go get -v -t -d ./...
+      - run: go test -v ./...
