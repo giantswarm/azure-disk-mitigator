@@ -19,3 +19,11 @@ func ToEvent(v interface{}) (corev1.Event, error) {
 
 	return *c, nil
 }
+
+func EventIsWarning(event corev1.Event) bool {
+	return event.Type == corev1.EventTypeWarning
+}
+
+func EventReason(event corev1.Event) string {
+	return event.Reason
+}

@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/giantswarm/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -9,6 +11,7 @@ import (
 	"github.com/giantswarm/operatorkit/resource/wrapper/metricsresource"
 	"github.com/giantswarm/operatorkit/resource/wrapper/retryresource"
 
+	"github.com/giantswarm/azure-disk-mitigator/service/controller/key"
 	"github.com/giantswarm/azure-disk-mitigator/service/controller/resource/azuredisk"
 )
 
@@ -59,14 +62,17 @@ func newEventResourceSet(config eventResourceSetConfig) (*controller.ResourceSet
 
 	// handlesFunc defines which objects you want to get into your controller, e.g. which objects you want to watch.
 	handlesFunc := func(obj interface{}) bool {
-		// TODO: By default this will handle all objects of the type your controller is watching.
-		// Your controller is watching a certain kubernetes type, so why do we need to check again?
-		// Because there might be a change in the object structure - e.g. the type `AWSConfig` object might have the field
-		// availabilityZones recently, but older ones don't, and you don't want to handle those.
-		//
-		// Normally we use this to filter objects containing the expected `versionbundle` version.
-		// So two versions of your operator don't accidentally reconcile the same CR.
-		return true
+		cr, err := key.ToEvent(obj)
+		if err != nil {
+			config.Logger.Log("level", "warning", "message", fmt.Sprintf("invalid object: %s", err), "stack", fmt.Sprintf("%v", err)) // nolint: errcheck
+			return false
+		}
+
+		if key.EventIsWarning(cr) && key.EventReason(cr) == "FailedAttachVolume" {
+			return true
+		}
+
+		return false
 	}
 
 	var resourceSet *controller.ResourceSet
