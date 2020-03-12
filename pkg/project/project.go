@@ -1,7 +1,7 @@
 package project
 
 var (
-	bundleVersion = "0.0.1"
+	bundleVersion = "0.0.1-dev"
 	description   = "The azure-disk-mitigator does something."
 	gitSHA        = "n/a"
 	name          = "azure-disk-mitigator"
