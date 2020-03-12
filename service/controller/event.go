@@ -13,19 +13,19 @@ import (
 	"github.com/giantswarm/azure-disk-mitigator/pkg/project"
 )
 
-type TODOConfig struct {
+type EventConfig struct {
 	K8sClient k8sclient.Interface
 	Logger    micrologger.Logger
 }
 
-type TODO struct {
+type Event struct {
 	*controller.Controller
 }
 
-func NewTODO(config TODOConfig) (*TODO, error) {
+func NewEvent(config EventConfig) (*Event, error) {
 	var err error
 
-	resourceSets, err := newTODOResourceSets(config)
+	resourceSets, err := newEventResourceSets(config)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
@@ -39,12 +39,12 @@ func NewTODO(config TODOConfig) (*TODO, error) {
 			Logger:       config.Logger,
 			ResourceSets: resourceSets,
 			NewRuntimeObjectFunc: func() runtime.Object {
-				return new(corev1.Pod)
+				return new(corev1.Event)
 			},
 
 			// Name is used to compute finalizer names. This here results in something
-			// like operatorkit.giantswarm.io/azure-disk-mitigator-todo-controller.
-			Name: project.Name() + "-todo-controller",
+			// like operatorkit.giantswarm.io/azure-disk-mitigator-event-controller.
+			Name: project.Name() + "-event-controller",
 		}
 
 		operatorkitController, err = controller.New(c)
@@ -53,24 +53,24 @@ func NewTODO(config TODOConfig) (*TODO, error) {
 		}
 	}
 
-	c := &TODO{
+	c := &Event{
 		Controller: operatorkitController,
 	}
 
 	return c, nil
 }
 
-func newTODOResourceSets(config TODOConfig) ([]*controller.ResourceSet, error) {
+func newEventResourceSets(config EventConfig) ([]*controller.ResourceSet, error) {
 	var err error
 
 	var resourceSet *controller.ResourceSet
 	{
-		c := todoResourceSetConfig{
+		c := eventResourceSetConfig{
 			K8sClient: config.K8sClient,
 			Logger:    config.Logger,
 		}
 
-		resourceSet, err = newTODOResourceSet(c)
+		resourceSet, err = newEventResourceSet(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}

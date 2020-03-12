@@ -9,32 +9,32 @@ import (
 	"github.com/giantswarm/operatorkit/resource/wrapper/metricsresource"
 	"github.com/giantswarm/operatorkit/resource/wrapper/retryresource"
 
-	"github.com/giantswarm/azure-disk-mitigator/service/controller/resource/test"
+	"github.com/giantswarm/azure-disk-mitigator/service/controller/resource/azuredisk"
 )
 
-type todoResourceSetConfig struct {
+type eventResourceSetConfig struct {
 	K8sClient k8sclient.Interface
 	Logger    micrologger.Logger
 }
 
-func newTODOResourceSet(config todoResourceSetConfig) (*controller.ResourceSet, error) {
+func newEventResourceSet(config eventResourceSetConfig) (*controller.ResourceSet, error) {
 	var err error
 
-	var testResource resource.Interface
+	var azureDiskResource resource.Interface
 	{
-		c := test.Config{
+		c := azuredisk.Config{
 			K8sClient: config.K8sClient,
 			Logger:    config.Logger,
 		}
 
-		testResource, err = test.New(c)
+		azureDiskResource, err = azuredisk.New(c)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
 
 	resources := []resource.Interface{
-		testResource,
+		azureDiskResource,
 	}
 
 	{

@@ -1,4 +1,4 @@
-package test
+package azuredisk
 
 import (
 	"github.com/giantswarm/microerror"
