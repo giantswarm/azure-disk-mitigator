@@ -1,4 +1,4 @@
 *.swp
 TODO
-/azure-disk-mitigator
+/azure-disk-mitigator-app
 !vendor/**

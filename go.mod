@@ -1,4 +1,4 @@
-module github.com/giantswarm/azure-disk-mitigator
+module github.com/giantswarm/azure-disk-mitigator-app
 
 go 1.13
 

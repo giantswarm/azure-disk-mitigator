@@ -1,3 +1,3 @@
 apiVersion: v1
-name: azure-disk-mitigator
+name: azure-disk-mitigator-app
 version: [[ .Version ]]

@@ -2,10 +2,10 @@ package project
 
 var (
 	bundleVersion = "0.0.1-dev"
-	description   = "The azure-disk-mitigator does something."
+	description   = "The azure-disk-mitigator-app does something."
 	gitSHA        = "n/a"
-	name          = "azure-disk-mitigator"
-	source        = "https://github.com/giantswarm/azure-disk-mitigator"
+	name          = "azure-disk-mitigator-app"
+	source        = "https://github.com/giantswarm/azure-disk-mitigator-app"
 	version       = "n/a"
 )
 

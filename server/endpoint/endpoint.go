@@ -6,7 +6,7 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 
-	"github.com/giantswarm/azure-disk-mitigator/service"
+	"github.com/giantswarm/azure-disk-mitigator-app/service"
 )
 
 type Config struct {

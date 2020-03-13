@@ -10,10 +10,10 @@ import (
 	"github.com/giantswarm/versionbundle"
 	"github.com/spf13/viper"
 
-	"github.com/giantswarm/azure-disk-mitigator/flag"
-	"github.com/giantswarm/azure-disk-mitigator/pkg/project"
-	"github.com/giantswarm/azure-disk-mitigator/server"
-	"github.com/giantswarm/azure-disk-mitigator/service"
+	"github.com/giantswarm/azure-disk-mitigator-app/flag"
+	"github.com/giantswarm/azure-disk-mitigator-app/pkg/project"
+	"github.com/giantswarm/azure-disk-mitigator-app/server"
+	"github.com/giantswarm/azure-disk-mitigator-app/service"
 )
 
 var (

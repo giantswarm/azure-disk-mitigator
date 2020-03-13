@@ -3,7 +3,7 @@ package flag
 import (
 	"github.com/giantswarm/microkit/flag"
 
-	"github.com/giantswarm/azure-disk-mitigator/flag/service"
+	"github.com/giantswarm/azure-disk-mitigator-app/flag/service"
 )
 
 // Flag provides data structure for service command line flags.
