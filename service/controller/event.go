@@ -10,7 +10,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	"github.com/giantswarm/azure-disk-mitigator/pkg/project"
+	"github.com/giantswarm/azure-disk-mitigator-app/pkg/project"
 )
 
 type EventConfig struct {
@@ -43,7 +43,7 @@ func NewEvent(config EventConfig) (*Event, error) {
 			},
 
 			// Name is used to compute finalizer names. This here results in something
-			// like operatorkit.giantswarm.io/azure-disk-mitigator-event-controller.
+			// like operatorkit.giantswarm.io/azure-disk-mitigator-app-event-controller.
 			Name: project.Name() + "-event-controller",
 		}
 

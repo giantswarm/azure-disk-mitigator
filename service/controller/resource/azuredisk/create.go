@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/azure-disk-mitigator/service/controller/key"
+	"github.com/giantswarm/azure-disk-mitigator-app/service/controller/key"
 )
 
 var (

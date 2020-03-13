@@ -16,7 +16,7 @@
       and commit your changes.
 
 -->
-[![CircleCI](https://circleci.com/gh/giantswarm/azure-disk-mitigator.svg?&style=shield)](https://circleci.com/gh/giantswarm/azure-disk-mitigator) [![Docker Repository on Quay](https://quay.io/repository/giantswarm/azure-disk-mitigator/status "Docker Repository on Quay")](https://quay.io/repository/giantswarm/azure-disk-mitigator)
+[![CircleCI](https://circleci.com/gh/giantswarm/azure-disk-mitigator-app.svg?&style=shield)](https://circleci.com/gh/giantswarm/azure-disk-mitigator-app) [![Docker Repository on Quay](https://quay.io/repository/giantswarm/azure-disk-mitigator-app/status "Docker Repository on Quay")](https://quay.io/repository/giantswarm/azure-disk-mitigator-app)
 
 # REPOSITORY_NAME
 
@@ -27,7 +27,7 @@ To use it just hit `Use this template` button or [this
 link][generate].
 
 After creating your repository replace all instances of
-`azure-disk-mitigator` in this code base with your new repository name.
-Also rename `helm/azure-disk-mitigator` directory.
+`azure-disk-mitigator-app` in this code base with your new repository name.
+Also rename `helm/azure-disk-mitigator-app` directory.
 
-[generate]: https://github.com/giantswarm/azure-disk-mitigator/generate
+[generate]: https://github.com/giantswarm/azure-disk-mitigator-app/generate

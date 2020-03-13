@@ -11,8 +11,8 @@ import (
 	"github.com/giantswarm/operatorkit/resource/wrapper/metricsresource"
 	"github.com/giantswarm/operatorkit/resource/wrapper/retryresource"
 
-	"github.com/giantswarm/azure-disk-mitigator/service/controller/key"
-	"github.com/giantswarm/azure-disk-mitigator/service/controller/resource/azuredisk"
+	"github.com/giantswarm/azure-disk-mitigator-app/service/controller/key"
+	"github.com/giantswarm/azure-disk-mitigator-app/service/controller/resource/azuredisk"
 )
 
 type eventResourceSetConfig struct {

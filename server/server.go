@@ -12,9 +12,9 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/viper"
 
-	"github.com/giantswarm/azure-disk-mitigator/pkg/project"
-	"github.com/giantswarm/azure-disk-mitigator/server/endpoint"
-	"github.com/giantswarm/azure-disk-mitigator/service"
+	"github.com/giantswarm/azure-disk-mitigator-app/pkg/project"
+	"github.com/giantswarm/azure-disk-mitigator-app/server/endpoint"
+	"github.com/giantswarm/azure-disk-mitigator-app/service"
 )
 
 type Config struct {
