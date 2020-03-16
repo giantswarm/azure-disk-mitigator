@@ -51,6 +51,8 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 		return microerror.Mask(err)
 	}
 
+	r.logger.LogCtx(ctx, "message", "Found VMSS for VM", "resourceGroup", resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
+
 	index := -1
 	for i, disk := range *vmss.StorageProfile.DataDisks {
 		if *disk.Name == diskName {
@@ -65,10 +67,13 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	*vmss.StorageProfile.DataDisks = remove(*vmss.StorageProfile.DataDisks, index)
 	//vmss.StorageProfile.DataDisks[index] = compute.DataDisk{}
 
+	r.logger.LogCtx(ctx, "message", "Updating VMSS on Azure API", resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 	_, err = client.Update(ctx, resourceGroup, vmssName, vmssInstanceName, vmss)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	r.logger.LogCtx(ctx, "message", "Updated VMSS", resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 
 	return nil
 }
