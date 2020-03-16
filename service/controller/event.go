@@ -11,11 +11,13 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	"github.com/giantswarm/azure-disk-mitigator-app/pkg/project"
+	"github.com/giantswarm/azure-disk-mitigator-app/service/client"
 )
 
 type EventConfig struct {
-	K8sClient k8sclient.Interface
-	Logger    micrologger.Logger
+	AzureClientSetConfig client.AzureClientSetConfig
+	K8sClient            k8sclient.Interface
+	Logger               micrologger.Logger
 }
 
 type Event struct {
@@ -66,8 +68,9 @@ func newEventResourceSets(config EventConfig) ([]*controller.ResourceSet, error)
 	var resourceSet *controller.ResourceSet
 	{
 		c := eventResourceSetConfig{
-			K8sClient: config.K8sClient,
-			Logger:    config.Logger,
+			AzureClientSetConfig: config.AzureClientSetConfig,
+			K8sClient:            config.K8sClient,
+			Logger:               config.Logger,
 		}
 
 		resourceSet, err = newEventResourceSet(c)

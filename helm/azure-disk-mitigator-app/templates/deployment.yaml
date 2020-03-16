@@ -33,12 +33,18 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       volumes:
-      - name: {{ .Values.project.name }}-configmap
+      - name: {{ tpl .Values.resource.default.name  . }}--configmap
         configMap:
           name: {{ tpl .Values.resource.default.name  . }}
           items:
           - key: config.yml
             path: config.yml
+      - name: {{ tpl .Values.resource.default.name  . }}-secret
+        secret:
+          secretName: {{ tpl .Values.resource.default.name  . }}
+          items:
+          - key: secret.yaml
+            path: secret.yaml
       serviceAccountName: {{ tpl .Values.resource.default.name  . }}
       securityContext:
         runAsUser: {{ .Values.pod.user.id }}
@@ -49,10 +55,14 @@ spec:
         args:
         - daemon
         - --config.dirs=/var/run/{{ .Values.project.name }}/configmap/
+        - --config.dirs=/var/run/{{ .Values.project.name }}/secret/
         - --config.files=config
+        - --config.files=secret
         volumeMounts:
         - name: {{ .Values.project.name }}-configmap
           mountPath: /var/run/{{ .Values.project.name }}/configmap/
+        - name: {{ tpl .Values.resource.default.name  . }}-secret
+          mountPath: /var/run/{{ .Values.project.name }}/secret/
         livenessProbe:
           httpGet:
             path: /healthz
