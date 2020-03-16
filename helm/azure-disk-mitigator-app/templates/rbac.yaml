@@ -12,13 +12,10 @@ rules:
   - apiGroups:
       - ""
     resources:
-      - configmaps
-      - namespaces
+      - events
     verbs:
-      - create
-      - update
-      - delete
       - get
+      - watch
       - list
   - apiGroups:
       - ""
