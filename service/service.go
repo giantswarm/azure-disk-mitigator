@@ -17,6 +17,7 @@ import (
 
 	"github.com/giantswarm/azure-disk-mitigator-app/flag"
 	"github.com/giantswarm/azure-disk-mitigator-app/pkg/project"
+	"github.com/giantswarm/azure-disk-mitigator-app/service/client"
 	"github.com/giantswarm/azure-disk-mitigator-app/service/collector"
 	"github.com/giantswarm/azure-disk-mitigator-app/service/controller"
 )
@@ -98,12 +99,21 @@ func New(config Config) (*Service, error) {
 		}
 	}
 
+	azureClientSetConfig := client.AzureClientSetConfig{
+		ClientID:        config.Viper.GetString(config.Flag.Service.Azure.ClientID),
+		ClientSecret:    config.Viper.GetString(config.Flag.Service.Azure.ClientSecret),
+		EnvironmentName: config.Viper.GetString(config.Flag.Service.Azure.EnvironmentName),
+		SubscriptionID:  config.Viper.GetString(config.Flag.Service.Azure.SubscriptionID),
+		TenantID:        config.Viper.GetString(config.Flag.Service.Azure.TenantID),
+	}
+
 	var eventController *controller.Event
 	{
 
 		c := controller.EventConfig{
-			K8sClient: k8sClient,
-			Logger:    config.Logger,
+			AzureClientSetConfig: azureClientSetConfig,
+			K8sClient:            k8sClient,
+			Logger:               config.Logger,
 		}
 
 		eventController, err = controller.NewEvent(c)

@@ -4,6 +4,8 @@ import (
 	"github.com/giantswarm/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+
+	"github.com/giantswarm/azure-disk-mitigator-app/service/client"
 )
 
 const (
@@ -11,12 +13,14 @@ const (
 )
 
 type Config struct {
-	K8sClient k8sclient.Interface
-	Logger    micrologger.Logger
+	AzureClientSetConfig client.AzureClientSetConfig
+	K8sClient            k8sclient.Interface
+	Logger               micrologger.Logger
 }
 
 type Resource struct {
-	logger micrologger.Logger
+	azureClientSetConfig client.AzureClientSetConfig
+	logger               micrologger.Logger
 }
 
 func New(config Config) (*Resource, error) {
@@ -25,7 +29,8 @@ func New(config Config) (*Resource, error) {
 	}
 
 	r := &Resource{
-		logger: config.Logger,
+		azureClientSetConfig: config.AzureClientSetConfig,
+		logger:               config.Logger,
 	}
 
 	return r, nil

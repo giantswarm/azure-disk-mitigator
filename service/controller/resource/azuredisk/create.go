@@ -3,7 +3,6 @@ package azuredisk
 import (
 	"context"
 	"errors"
-	"os"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute"
@@ -38,7 +37,7 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	vmssInstanceName := match[8]
 	// nodeName := match[9]
 
-	client, err := getVMSSClient()
+	client, err := r.getVMSSClient()
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -70,28 +69,23 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	return nil
 }
 
-func getVMSSClient() (compute.VirtualMachineScaleSetVMsClient, error) {
-	azureClientID := os.Getenv("AZURE_CLIENTID")
-	azureClientSecret := os.Getenv("AZURE_CLIENTSECRET")
-	azureSubscriptionID := os.Getenv("AZURE_SUBSCRIPTIONID")
-	azureTenantID := os.Getenv("AZURE_TENANTID")
-
+func (r *Resource) getVMSSClient() (compute.VirtualMachineScaleSetVMsClient, error) {
 	env, err := azure.EnvironmentFromName(azure.PublicCloud.Name)
 	if err != nil {
 		return compute.VirtualMachineScaleSetVMsClient{}, err
 	}
 
-	oauthConfig, err := adal.NewOAuthConfig(env.ActiveDirectoryEndpoint, azureTenantID)
+	oauthConfig, err := adal.NewOAuthConfig(env.ActiveDirectoryEndpoint, r.azureClientSetConfig.TenantID)
 	if err != nil {
 		return compute.VirtualMachineScaleSetVMsClient{}, err
 	}
 
-	servicePrincipalToken, err := adal.NewServicePrincipalToken(*oauthConfig, azureClientID, azureClientSecret, env.ServiceManagementEndpoint)
+	servicePrincipalToken, err := adal.NewServicePrincipalToken(*oauthConfig, r.azureClientSetConfig.ClientID, r.azureClientSetConfig.ClientSecret, env.ServiceManagementEndpoint)
 	if err != nil {
 		return compute.VirtualMachineScaleSetVMsClient{}, err
 	}
 
-	virtualMachineScaleSetsClient := compute.NewVirtualMachineScaleSetVMsClient(azureSubscriptionID)
+	virtualMachineScaleSetsClient := compute.NewVirtualMachineScaleSetVMsClient(r.azureClientSetConfig.SubscriptionID)
 	virtualMachineScaleSetsClient.Authorizer = autorest.NewBearerAuthorizer(servicePrincipalToken)
 
 	return virtualMachineScaleSetsClient, nil

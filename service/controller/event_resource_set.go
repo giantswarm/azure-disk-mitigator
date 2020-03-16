@@ -11,13 +11,15 @@ import (
 	"github.com/giantswarm/operatorkit/resource/wrapper/metricsresource"
 	"github.com/giantswarm/operatorkit/resource/wrapper/retryresource"
 
+	"github.com/giantswarm/azure-disk-mitigator-app/service/client"
 	"github.com/giantswarm/azure-disk-mitigator-app/service/controller/key"
 	"github.com/giantswarm/azure-disk-mitigator-app/service/controller/resource/azuredisk"
 )
 
 type eventResourceSetConfig struct {
-	K8sClient k8sclient.Interface
-	Logger    micrologger.Logger
+	AzureClientSetConfig client.AzureClientSetConfig
+	K8sClient            k8sclient.Interface
+	Logger               micrologger.Logger
 }
 
 func newEventResourceSet(config eventResourceSetConfig) (*controller.ResourceSet, error) {
@@ -26,8 +28,9 @@ func newEventResourceSet(config eventResourceSetConfig) (*controller.ResourceSet
 	var azureDiskResource resource.Interface
 	{
 		c := azuredisk.Config{
-			K8sClient: config.K8sClient,
-			Logger:    config.Logger,
+			AzureClientSetConfig: config.AzureClientSetConfig,
+			K8sClient:            config.K8sClient,
+			Logger:               config.Logger,
 		}
 
 		azureDiskResource, err = azuredisk.New(c)
