@@ -41,6 +41,7 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	vmssInstanceName := match[8]
 	// nodeName := match[9]
 
+	r.logger.LogCtx(ctx, "message", "Finding VMSS for VM", "resourceGroup", "subscription", r.azureClientSetConfig.SubscriptionID, "clientID", r.azureClientSetConfig.ClientID, resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 	client, err := r.getVMSSClient()
 	if err != nil {
 		return microerror.Mask(err)
