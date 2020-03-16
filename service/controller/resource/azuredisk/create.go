@@ -51,7 +51,7 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 		return microerror.Mask(err)
 	}
 
-	r.logger.LogCtx(ctx, "message", "Found VMSS for VM", "resourceGroup", resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
+	r.logger.LogCtx(ctx, "message", "Found VMSS for VM", "resourceGroup", "subscription", r.azureClientSetConfig.SubscriptionID, "clientID", r.azureClientSetConfig.ClientID, resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 
 	index := -1
 	for i, disk := range *vmss.StorageProfile.DataDisks {
