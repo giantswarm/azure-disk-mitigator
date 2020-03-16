@@ -26,6 +26,10 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 
 	r.logger.LogCtx(ctx, "message", event.Message)
 	match := detachErrorRegex.FindStringSubmatch(event.Message)
+	if match == nil {
+		return nil
+	}
+
 	pvcName := match[1]
 	r.logger.LogCtx(ctx, "pvc", pvcName)
 	// subscriptionId := match[2]
