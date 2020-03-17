@@ -33,7 +33,7 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       volumes:
-      - name: {{ tpl .Values.resource.default.name  . }}--configmap
+      - name: {{ .Values.project.name }}-configmap
         configMap:
           name: {{ tpl .Values.resource.default.name  . }}
           items:

@@ -26,6 +26,10 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 
 	r.logger.LogCtx(ctx, "message", event.Message)
 	match := detachErrorRegex.FindStringSubmatch(event.Message)
+	if match == nil {
+		return nil
+	}
+
 	pvcName := match[1]
 	r.logger.LogCtx(ctx, "pvc", pvcName)
 	// subscriptionId := match[2]
@@ -37,6 +41,7 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	vmssInstanceName := match[8]
 	// nodeName := match[9]
 
+	r.logger.LogCtx(ctx, "message", "Finding VMSS for VM", "resourceGroup", "subscription", r.azureClientSetConfig.SubscriptionID, "clientID", r.azureClientSetConfig.ClientID, resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 	client, err := r.getVMSSClient()
 	if err != nil {
 		return microerror.Mask(err)
@@ -46,6 +51,8 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	r.logger.LogCtx(ctx, "message", "Found VMSS for VM", "resourceGroup", "subscription", r.azureClientSetConfig.SubscriptionID, "clientID", r.azureClientSetConfig.ClientID, resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 
 	index := -1
 	for i, disk := range *vmss.StorageProfile.DataDisks {
@@ -61,10 +68,13 @@ func (r *Resource) EnsureCreated(ctx context.Context, obj interface{}) error {
 	*vmss.StorageProfile.DataDisks = remove(*vmss.StorageProfile.DataDisks, index)
 	//vmss.StorageProfile.DataDisks[index] = compute.DataDisk{}
 
+	r.logger.LogCtx(ctx, "message", "Updating VMSS on Azure API", resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 	_, err = client.Update(ctx, resourceGroup, vmssName, vmssInstanceName, vmss)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	r.logger.LogCtx(ctx, "message", "Updated VMSS", resourceGroup, "vmss", vmssName, "vm", vmssInstanceName)
 
 	return nil
 }
